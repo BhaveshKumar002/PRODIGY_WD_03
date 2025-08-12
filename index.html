@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tic Tac Toe with Scoreboard</title>
 <style>
-Optmize this code for mobiler
-
     body {
         font-family: Arial, sans-serif;
         background: #282c34;
@@ -15,26 +13,33 @@ Optmize this code for mobiler
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100vh;
+        min-height: 100vh;
         margin: 0;
+        padding: 10px;
     }
 
     h1 {
         margin-bottom: 10px;
+        font-size: clamp(20px, 4vw, 32px);
+        text-align: center;
     }
 
     .scoreboard {
         display: flex;
-        gap: 30px;
-        margin-bottom: 20px;
-        font-size: 18px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 15px;
+        font-size: clamp(14px, 2.5vw, 18px);
+        text-align: center;
     }
 
     .board {
         display: grid;
-        grid-template-columns: repeat(3, 100px);
-        grid-template-rows: repeat(3, 100px);
+        grid-template-columns: repeat(3, 1fr);
         gap: 5px;
+        width: min(90vmin, 360px);
+        height: min(90vmin, 360px);
     }
 
     .cell {
@@ -42,13 +47,15 @@ Optmize this code for mobiler
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 36px;
+        font-size: clamp(24px, 8vmin, 36px);
         cursor: pointer;
         border-radius: 8px;
-        transition: background 0.3s;
+        transition: background 0.2s ease;
+        user-select: none;
     }
 
-    .cell:hover {
+    .cell:hover,
+    .cell:active {
         background: #666;
     }
 
@@ -56,18 +63,21 @@ Optmize this code for mobiler
         color: #4CAF50;
         font-weight: bold;
         margin-top: 15px;
-        font-size: 20px;
+        font-size: clamp(16px, 3vw, 20px);
+        text-align: center;
+        min-height: 1.5em;
     }
 
     button {
         margin-top: 15px;
         padding: 10px 20px;
-        font-size: 16px;
+        font-size: clamp(14px, 3vw, 16px);
         background: #4CAF50;
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        touch-action: manipulation;
     }
 
     button:hover {
@@ -107,7 +117,7 @@ Optmize this code for mobiler
         board.forEach((cell, index) => {
             const cellElement = document.createElement('div');
             cellElement.classList.add('cell');
-            cellElement.addEventListener('click', () => makeMove(index));
+            cellElement.addEventListener('click', () => makeMove(index), { once: true });
             cellElement.textContent = cell;
             boardElement.appendChild(cellElement);
         });
@@ -118,7 +128,7 @@ Optmize this code for mobiler
             board[index] = currentPlayer;
             createBoard();
             if (checkWinner()) {
-                winnerElement.textContent = Player ${currentPlayer} Wins! 🎉;
+                winnerElement.textContent = `Player ${currentPlayer} Wins! 🎉`;
                 if (currentPlayer === 'X') scoreX++;
                 else scoreO++;
                 updateScore();
@@ -136,7 +146,7 @@ Optmize this code for mobiler
         const winningCombinations = [
             [0,1,2], [3,4,5], [6,7,8], 
             [0,3,6], [1,4,7], [2,5,8], 
-            [0,4,8], [2,4,6]           
+            [0,4,8], [2,4,6]
         ];
         return winningCombinations.some(combo => {
             const [a, b, c] = combo;
